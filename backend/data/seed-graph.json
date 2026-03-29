@@ -1,0 +1,555 @@
+{
+  "skills": [
+    {
+      "id": "s1",
+      "name": "Matched Grip",
+      "category": "Technique",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "The standard grip where both hands hold the stick the same way, palms facing down.",
+      "prerequisiteIds": []
+    },
+    {
+      "id": "s2",
+      "name": "Traditional Grip",
+      "category": "Technique",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "Jazz-originated grip where the left hand holds the stick underhand.",
+      "prerequisiteIds": []
+    },
+    {
+      "id": "s3",
+      "name": "Posture & Throne Height",
+      "category": "Technique",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "Proper seated posture and drum throne height for relaxed, injury-free playing.",
+      "prerequisiteIds": []
+    },
+    {
+      "id": "s4",
+      "name": "Basic Hi-Hat Foot Technique",
+      "category": "Technique",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "Using the hi-hat pedal to open and close the cymbals with the left foot.",
+      "prerequisiteIds": []
+    },
+    {
+      "id": "s5",
+      "name": "Bass Drum Heel-Toe",
+      "category": "Technique",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "The heel-toe bass drum technique for smooth and controlled kick strokes.",
+      "prerequisiteIds": []
+    },
+    {
+      "id": "s6",
+      "name": "Single Stroke Roll",
+      "category": "Rudiment",
+      "level": "Beginner",
+      "hasBpmTarget": true,
+      "description": "The most fundamental rudiment: alternating single strokes RLRL.",
+      "prerequisiteIds": ["s1"]
+    },
+    {
+      "id": "s7",
+      "name": "Double Stroke Roll",
+      "category": "Rudiment",
+      "level": "Beginner",
+      "hasBpmTarget": true,
+      "description": "Two strokes per hand: RRLL, the foundation of the drum roll.",
+      "prerequisiteIds": ["s6"]
+    },
+    {
+      "id": "s8",
+      "name": "Single Paradiddle",
+      "category": "Rudiment",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "RLRR LRLL — the classic paradiddle sticking pattern.",
+      "prerequisiteIds": ["s6"]
+    },
+    {
+      "id": "s9",
+      "name": "Flam",
+      "category": "Rudiment",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "A grace note played just before the main stroke for a fuller sound.",
+      "prerequisiteIds": ["s6"]
+    },
+    {
+      "id": "s10",
+      "name": "Reading Basic Notation",
+      "category": "Theory",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "Reading standard drum notation: note values, rests, and time signatures.",
+      "prerequisiteIds": []
+    },
+    {
+      "id": "s11",
+      "name": "4/4 Time Signature",
+      "category": "Theory",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "Understanding 4/4 common time: counting beats, bar lines, and subdivision.",
+      "prerequisiteIds": ["s10"]
+    },
+    {
+      "id": "s12",
+      "name": "Basic Rock Beat",
+      "category": "Groove",
+      "level": "Beginner",
+      "hasBpmTarget": true,
+      "description": "The fundamental rock groove: bass on 1 & 3, snare on 2 & 4, eighth-note hi-hats.",
+      "prerequisiteIds": ["s1", "s5", "s4"]
+    },
+    {
+      "id": "s13",
+      "name": "Basic Hi-Hat Variations",
+      "category": "Groove",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "Varying the hi-hat pattern: open hi-hats on the 'and' beats, sixteenth notes.",
+      "prerequisiteIds": ["s12"]
+    },
+    {
+      "id": "s14",
+      "name": "Basic Coordination",
+      "category": "Coordination",
+      "level": "Beginner",
+      "hasBpmTarget": false,
+      "description": "Playing hands and feet independently: hands on a rhythm while feet keep a simple pattern.",
+      "prerequisiteIds": ["s1", "s5"]
+    },
+    {
+      "id": "s15",
+      "name": "Eighth-Note Triplet Feel",
+      "category": "Groove",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "Playing a swung, triplet-based groove for blues and jazz contexts.",
+      "prerequisiteIds": ["s12", "s11"]
+    },
+    {
+      "id": "s16",
+      "name": "Double Paradiddle",
+      "category": "Rudiment",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "RLRLRR LRLRLL — an extended paradiddle sticking.",
+      "prerequisiteIds": ["s8"]
+    },
+    {
+      "id": "s17",
+      "name": "Linear Drumming",
+      "category": "Coordination",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "No two limbs play at the same time — every beat is voiced by a single limb.",
+      "prerequisiteIds": ["s14", "s12"]
+    },
+    {
+      "id": "s18",
+      "name": "Ghost Notes",
+      "category": "Technique",
+      "level": "Intermediate",
+      "hasBpmTarget": false,
+      "description": "Very soft snare strokes played between the main backbeat to add texture and feel.",
+      "prerequisiteIds": ["s6", "s12"]
+    },
+    {
+      "id": "s19",
+      "name": "Polyrhythm 3 over 4",
+      "category": "Coordination",
+      "level": "Advanced",
+      "hasBpmTarget": false,
+      "description": "Superimposing three equal divisions over a four-beat bar.",
+      "prerequisiteIds": ["s17", "s11"]
+    },
+    {
+      "id": "s20",
+      "name": "Odd Time Signatures",
+      "category": "Theory",
+      "level": "Advanced",
+      "hasBpmTarget": false,
+      "description": "Playing confidently in 5/4, 7/8, 7/4 and other asymmetric meters.",
+      "prerequisiteIds": ["s11", "s15"]
+    },
+    {
+      "id": "s21",
+      "name": "Brushwork Basics",
+      "category": "Technique",
+      "level": "Intermediate",
+      "hasBpmTarget": false,
+      "description": "Using drum brushes for swirling and sweeping sounds on the snare drum.",
+      "prerequisiteIds": ["s2", "s12"]
+    },
+    {
+      "id": "s22",
+      "name": "Heel-Up Bass Drum Technique",
+      "category": "Technique",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "Driving the beater with the ball of the foot lifted, enabling more power and speed.",
+      "prerequisiteIds": ["s5"]
+    },
+    {
+      "id": "s23",
+      "name": "Funk Groove",
+      "category": "Groove",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "Sixteenth-note hi-hat groove with syncopated bass drum and ghost-note snare.",
+      "prerequisiteIds": ["s18", "s13"]
+    },
+    {
+      "id": "s24",
+      "name": "Jazz Ride Pattern",
+      "category": "Groove",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "The classic jazz ride cymbal comping pattern with swung eighth notes.",
+      "prerequisiteIds": ["s15", "s4"]
+    },
+    {
+      "id": "s25",
+      "name": "One-Handed Roll (Moeller)",
+      "category": "Technique",
+      "level": "Advanced",
+      "hasBpmTarget": true,
+      "description": "The Moeller whip-stroke technique for fast, relaxed single-handed rolls.",
+      "prerequisiteIds": ["s7", "s22"]
+    },
+    {
+      "id": "s26",
+      "name": "Drum Fill Construction",
+      "category": "Coordination",
+      "level": "Intermediate",
+      "hasBpmTarget": true,
+      "description": "Building musical fills around the kit — transitions, tom patterns, and endings.",
+      "prerequisiteIds": ["s14", "s8"]
+    },
+    {
+      "id": "s27",
+      "name": "Press Roll",
+      "category": "Rudiment",
+      "level": "Advanced",
+      "hasBpmTarget": false,
+      "description": "The closed (buzz) roll using sustained pressure strokes to create a continuous sound.",
+      "prerequisiteIds": ["s7"]
+    },
+    {
+      "id": "s28",
+      "name": "Advanced Polyrhythm",
+      "category": "Coordination",
+      "level": "Professional",
+      "hasBpmTarget": false,
+      "description": "Simultaneous independent limb cycles: e.g. 4 against 3 against 2 across all four limbs.",
+      "prerequisiteIds": ["s19", "s20"]
+    },
+    {
+      "id": "s29",
+      "name": "Metric Modulation",
+      "category": "Theory",
+      "level": "Advanced",
+      "hasBpmTarget": false,
+      "description": "Smoothly shifting perceived tempo by reinterpreting subdivisions as the new pulse.",
+      "prerequisiteIds": ["s20", "s25"]
+    },
+    {
+      "id": "s30",
+      "name": "Double Bass Drumming",
+      "category": "Technique",
+      "level": "Advanced",
+      "hasBpmTarget": true,
+      "description": "Using two bass drums or a double pedal for fast alternating kick patterns.",
+      "prerequisiteIds": ["s22"]
+    },
+    {
+      "id": "s31",
+      "name": "Orchestral Snare Technique",
+      "category": "Technique",
+      "level": "Professional",
+      "hasBpmTarget": true,
+      "description": "Concert-level snare drumming: dynamics, rolls, and control for classical performance.",
+      "prerequisiteIds": ["s27", "s25"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "e1",
+      "name": "Grip & Posture Check",
+      "description": "Sit at the kit and establish a relaxed matched grip. Check throne height — thighs slightly angled down.",
+      "notes": "Focus on relaxed wrists. No tension in forearms.",
+      "targetBpm": null,
+      "estimatedMinutes": 5,
+      "skillIds": ["s1", "s3"]
+    },
+    {
+      "id": "e2",
+      "name": "Traditional Grip Introduction",
+      "description": "Practice the left-hand traditional grip hold. Rotate forearm, nestle stick in the pocket between thumb and index.",
+      "notes": "Use a pillow pad before moving to the kit.",
+      "targetBpm": null,
+      "estimatedMinutes": 10,
+      "skillIds": ["s2"]
+    },
+    {
+      "id": "e3",
+      "name": "Hi-Hat Foot Pulse",
+      "description": "Tap quarter notes on the hi-hat pedal with your left foot while counting aloud.",
+      "notes": "Keep tapping even and relaxed. Start with just the foot, no hands.",
+      "targetBpm": null,
+      "estimatedMinutes": 5,
+      "skillIds": ["s4"]
+    },
+    {
+      "id": "e4",
+      "name": "Bass Drum Single Strokes",
+      "description": "Play single bass drum strokes at a steady tempo, focusing on consistent tone.",
+      "notes": "Use heel-toe motion. Listen for a clean, full sound on each stroke.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s5"]
+    },
+    {
+      "id": "e5",
+      "name": "Single Stroke Roll — Slow",
+      "description": "RLRL at a slow tempo on the snare, focusing on even spacing and equal volume.",
+      "notes": "Use a metronome. Each stroke should sound identical in volume.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s6"]
+    },
+    {
+      "id": "e6",
+      "name": "Single Stroke Roll — Speed Build",
+      "description": "Gradually increase tempo in 5 BPM increments, spending 2 minutes at each speed.",
+      "notes": "Stop if tension appears. Speed comes from relaxation, not force.",
+      "targetBpm": 140,
+      "estimatedMinutes": 15,
+      "skillIds": ["s6"]
+    },
+    {
+      "id": "e7",
+      "name": "Double Stroke — Open Roll",
+      "description": "RRLL at a moderate tempo, keeping both strokes per hand even and controlled.",
+      "notes": "The second stroke should be a rebound, not a separate arm movement.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s7"]
+    },
+    {
+      "id": "e8",
+      "name": "Double Stroke Speed Drill",
+      "description": "Practice doubles from 80 to 160 BPM using a 'slow-fast' approach.",
+      "notes": "Allow the stick to do the work on the second stroke.",
+      "targetBpm": 160,
+      "estimatedMinutes": 15,
+      "skillIds": ["s7"]
+    },
+    {
+      "id": "e9",
+      "name": "Single Paradiddle — Snare",
+      "description": "RLRR LRLL on the snare at a comfortable tempo. Count aloud.",
+      "notes": "Accent the first note of each group.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s8"]
+    },
+    {
+      "id": "e10",
+      "name": "Paradiddle Around the Kit",
+      "description": "Apply paradiddle sticking across the toms and snare to create a musical pattern.",
+      "notes": "Move the accented notes to different drums.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s8", "s26"]
+    },
+    {
+      "id": "e11",
+      "name": "Flam — Basic Approach",
+      "description": "Practice single flams on the snare, alternating lead hands.",
+      "notes": "The grace note should be very quiet — a whisper before the main stroke.",
+      "targetBpm": 70,
+      "estimatedMinutes": 10,
+      "skillIds": ["s9"]
+    },
+    {
+      "id": "e12",
+      "name": "Reading Notation Worksheet",
+      "description": "Read and clap/tap the rhythms in a beginner notation worksheet (quarter, half, whole notes).",
+      "notes": "Count aloud: '1, 2, 3, 4' while tapping.",
+      "targetBpm": null,
+      "estimatedMinutes": 10,
+      "skillIds": ["s10"]
+    },
+    {
+      "id": "e13",
+      "name": "Counting in 4/4",
+      "description": "Clap a written rhythm in 4/4, subdividing into eighth notes while counting.",
+      "notes": "Say '1-and-2-and-3-and-4-and' aloud.",
+      "targetBpm": null,
+      "estimatedMinutes": 10,
+      "skillIds": ["s11"]
+    },
+    {
+      "id": "e14",
+      "name": "Basic Rock Beat — Introduction",
+      "description": "Bass on 1 & 3, snare on 2 & 4, eighth-note hi-hats. Play for 5-minute blocks.",
+      "notes": "Build it in layers: hi-hats first, then add snare, then bass.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s12"]
+    },
+    {
+      "id": "e15",
+      "name": "Rock Beat — Tempo Range",
+      "description": "Play the basic rock beat across a range from 70 to 130 BPM.",
+      "notes": "The goal is comfort and consistency across tempos.",
+      "targetBpm": 120,
+      "estimatedMinutes": 15,
+      "skillIds": ["s12"]
+    },
+    {
+      "id": "e16",
+      "name": "Open Hi-Hat on the 'and'",
+      "description": "Add an open hi-hat on the 'and' of beat 2 or 4 to the basic rock beat.",
+      "notes": "Close the hi-hat cleanly on the following downbeat.",
+      "targetBpm": 90,
+      "estimatedMinutes": 10,
+      "skillIds": ["s13"]
+    },
+    {
+      "id": "e17",
+      "name": "Hands vs. Feet Independence",
+      "description": "Play a quarter-note hand pattern while maintaining a separate foot ostinato.",
+      "notes": "Start slowly. Let each limb be 'on autopilot' before adding complexity.",
+      "targetBpm": null,
+      "estimatedMinutes": 10,
+      "skillIds": ["s14"]
+    },
+    {
+      "id": "e18",
+      "name": "Shuffle Groove",
+      "description": "Play a swung eighth-note groove (shuffle) in a 12-bar blues form.",
+      "notes": "Listen to classic blues drummers for feel reference.",
+      "targetBpm": 90,
+      "estimatedMinutes": 10,
+      "skillIds": ["s15"]
+    },
+    {
+      "id": "e19",
+      "name": "Double Paradiddle Drill",
+      "description": "RLRLRR LRLRLL at a steady tempo on the snare.",
+      "notes": "Watch for the doubled stroke at the end — keep it even.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s16"]
+    },
+    {
+      "id": "e20",
+      "name": "Linear Groove Pattern 1",
+      "description": "Play a classic funk linear pattern where kick, snare, and hi-hat never overlap.",
+      "notes": "Visualise the pattern written on paper first.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s17"]
+    },
+    {
+      "id": "e21",
+      "name": "Ghost Note Groove",
+      "description": "Add ghost notes to a basic rock beat — quiet snare strokes on the 'e' and 'a' subdivisions.",
+      "notes": "Ghost notes should be nearly inaudible — feel them more than hear them.",
+      "targetBpm": 90,
+      "estimatedMinutes": 10,
+      "skillIds": ["s18", "s12"]
+    },
+    {
+      "id": "e22",
+      "name": "3 over 4 Exercise",
+      "description": "Play three equal strokes over a 4/4 bar on a practice pad, using a metronome.",
+      "notes": "Tap foot on beat, hands on the triplet subdivision.",
+      "targetBpm": null,
+      "estimatedMinutes": 10,
+      "skillIds": ["s19"]
+    },
+    {
+      "id": "e23",
+      "name": "5/4 Groove",
+      "description": "Play a groove pattern in 5/4 time. Try grouping as 3+2 or 2+3.",
+      "notes": "Count '1-2-3-4-5' aloud until it feels natural.",
+      "targetBpm": 80,
+      "estimatedMinutes": 10,
+      "skillIds": ["s20"]
+    },
+    {
+      "id": "e24",
+      "name": "Brush Sweeping on Snare",
+      "description": "Practice circular and sweeping brush motions on a snare with a snare head.",
+      "notes": "Keep brushes flat on the head. Listen for a smooth, continuous sound.",
+      "targetBpm": null,
+      "estimatedMinutes": 10,
+      "skillIds": ["s21"]
+    },
+    {
+      "id": "e25",
+      "name": "Heel-Up Single Strokes",
+      "description": "Heel-up bass drum singles at increasing tempos, focusing on ankle drive.",
+      "notes": "Keep the leg relaxed. Drive from the ankle, not the thigh.",
+      "targetBpm": 120,
+      "estimatedMinutes": 10,
+      "skillIds": ["s22"]
+    },
+    {
+      "id": "e26",
+      "name": "Funk Groove — Sixteenth Hi-Hats",
+      "description": "Play a funk groove with sixteenth-note hi-hats, ghost notes on snare, and syncopated kick.",
+      "notes": "Classic funk feel — think James Brown-era grooves.",
+      "targetBpm": 90,
+      "estimatedMinutes": 10,
+      "skillIds": ["s23"]
+    },
+    {
+      "id": "e27",
+      "name": "Jazz Comping — Ride Pattern",
+      "description": "Play the jazz ride pattern (dotted-eighth + sixteenth on ride), with hi-hat on 2 & 4.",
+      "notes": "Keep the pattern loose and swinging. The ride should 'float'.",
+      "targetBpm": 120,
+      "estimatedMinutes": 10,
+      "skillIds": ["s24"]
+    },
+    {
+      "id": "e28",
+      "name": "Basic Tom Fill Patterns",
+      "description": "Play common 4-beat fills moving from high to low toms, using paradiddle sticking.",
+      "notes": "Record yourself to evaluate evenness and timing.",
+      "targetBpm": 100,
+      "estimatedMinutes": 10,
+      "skillIds": ["s26"]
+    },
+    {
+      "id": "e29",
+      "name": "Press Roll — Buzz Practice",
+      "description": "Practice sustained press/buzz rolls on a snare, controlling the pressure for even sound.",
+      "notes": "Use a practice pad. Apply downward pressure after each stroke.",
+      "targetBpm": null,
+      "estimatedMinutes": 10,
+      "skillIds": ["s27"]
+    },
+    {
+      "id": "e30",
+      "name": "Double Bass — Alternating Singles",
+      "description": "Play alternating right-left single strokes on double bass pedal at varying tempos.",
+      "notes": "Start at 60 BPM. Only increase when perfectly even.",
+      "targetBpm": 120,
+      "estimatedMinutes": 15,
+      "skillIds": ["s30"]
+    }
+  ]
+}
