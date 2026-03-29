@@ -33,20 +33,45 @@ export function createSkillsRouter(db: Pool): Router {
       return;
     }
 
+    for (const item of ratings) {
+      const skillId =
+        typeof item === 'object' && item !== null && 'skillId' in item
+          ? (item as { skillId: unknown }).skillId
+          : undefined;
+      const rating =
+        typeof item === 'object' && item !== null && 'rating' in item
+          ? (item as { rating: unknown }).rating
+          : undefined;
+
+      if (
+        typeof skillId !== 'string' ||
+        skillId.length === 0 ||
+        (rating !== 1 && rating !== 2 && rating !== 3)
+      ) {
+        res.status(400).json({ error: 'Invalid ratings format' });
+        return;
+      }
+    }
+
+    const client = await db.connect();
     try {
-      for (const item of ratings as Array<{ skillId: string; rating: 1 | 2 | 3 }>) {
-        const score = onboardingRatingToScore(item.rating);
-        await db.query(
+      await client.query('BEGIN');
+      for (const { skillId, rating } of ratings as Array<{ skillId: string; rating: 1 | 2 | 3 }>) {
+        const score = onboardingRatingToScore(rating);
+        await client.query(
           `INSERT INTO user_mastery (user_id, skill_id, score, qualifying_sessions)
            VALUES ($1, $2, $3, 0)
            ON CONFLICT (user_id, skill_id) DO UPDATE SET score = EXCLUDED.score`,
-          [req.userId!, item.skillId, score]
+          [req.userId!, skillId, score]
         );
       }
-
+      await client.query('COMMIT');
       res.status(200).json({ updated: ratings.length });
     } catch (err) {
+      await client.query('ROLLBACK');
       next(err);
+    } finally {
+      client.release();
     }
   });
 
