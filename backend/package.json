@@ -1,0 +1,30 @@
+{
+  "name": "drumpath-backend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "test": "jest",
+    "generate-graph": "tsx scripts/generate-graph.ts",
+    "import-seed": "tsx scripts/import-seed.ts"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "@anthropic-ai/sdk": "^0.24.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/pg": "^8.11.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/jest": "^29.5.12",
+    "typescript": "^5.4.5",
+    "tsx": "^4.7.2",
+    "ts-jest": "^29.1.2",
+    "jest": "^29.7.0"
+  }
+}
