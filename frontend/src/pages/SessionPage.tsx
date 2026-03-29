@@ -3,10 +3,11 @@ import { Navigate, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth';
 import Layout from '../components/Layout';
 import { apiFetch } from '../api/client';
-import { Exercise, Feeling } from '../types';
+import { Feeling } from '../types';
+import { PlannedExercise } from './PracticePage';
 
 interface LocationState {
-  exercises?: Exercise[];
+  plan?: PlannedExercise[];
 }
 
 interface SessionLog {
@@ -37,14 +38,14 @@ export default function SessionPage() {
   const navigate = useNavigate();
 
   const state = location.state as LocationState | null;
-  const exercises: Exercise[] = state?.exercises ?? [];
+  const plan: PlannedExercise[] = state?.plan ?? [];
 
   const [logs, setLogs] = useState<SessionLog[]>(
-    exercises.map((ex) => ({
-      exerciseId: ex.id,
-      bpmReached: ex.targetBpm,
+    plan.map((item) => ({
+      exerciseId: item.exercise.id,
+      bpmReached: item.suggestedBpm,
       feeling: 'OK',
-      minutesSpent: ex.estimatedMinutes,
+      minutesSpent: item.exercise.estimatedMinutes,
       submitted: false,
     }))
   );
@@ -136,12 +137,13 @@ export default function SessionPage() {
           </div>
         )}
 
-        {exercises.length === 0 && (
+        {plan.length === 0 && (
           <div className="text-center py-12 text-gray-500">No exercises in this session.</div>
         )}
 
         <div className="space-y-4">
-          {exercises.map((exercise, idx) => {
+          {plan.map((item, idx) => {
+            const exercise = item.exercise;
             const log = logs[idx];
             return (
               <div
@@ -166,7 +168,7 @@ export default function SessionPage() {
 
                 {!log.submitted && (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {exercise.targetBpm !== null && (
+                    {item.suggestedBpm !== null && (
                       <div>
                         <label className="block text-xs text-gray-400 mb-1">BPM Reached</label>
                         <input

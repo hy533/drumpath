@@ -34,8 +34,8 @@ export default function SkillGraphPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    apiFetch<SkillWithMastery[]>('/skills')
-      .then(setSkills)
+    apiFetch<{ skills: SkillWithMastery[] }>('/skills')
+      .then((data) => setSkills(data.skills))
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load skills'))
       .finally(() => setLoading(false));
   }, []);

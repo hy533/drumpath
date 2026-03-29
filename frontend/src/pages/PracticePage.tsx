@@ -3,19 +3,24 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Layout from '../components/Layout';
 import { apiFetch } from '../api/client';
-import { Exercise } from '../types';
+import { Exercise, ExerciseWithSkills } from '../types';
+
+export interface PlannedExercise {
+  exercise: ExerciseWithSkills;
+  suggestedBpm: number | null;
+}
 
 interface PlanResponse {
-  exercises: Exercise[];
+  plan: PlannedExercise[];
 }
 
 interface SessionResponse {
-  id: string;
+  sessionId: string;
 }
 
 export default function PracticePage() {
   const { isAuthenticated } = useAuth();
-  const [plan, setPlan] = useState<Exercise[]>([]);
+  const [plan, setPlan] = useState<PlannedExercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
@@ -26,7 +31,7 @@ export default function PracticePage() {
       method: 'POST',
       body: JSON.stringify({ targetMinutes: 30 }),
     })
-      .then((data) => setPlan(data.exercises))
+      .then((data) => setPlan(data.plan))
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to generate plan'))
       .finally(() => setLoading(false));
   }, []);
@@ -39,7 +44,7 @@ export default function PracticePage() {
         method: 'POST',
         body: JSON.stringify({}),
       });
-      navigate(`/session/${session.id}`, { state: { exercises: plan } });
+      navigate(`/session/${session.sessionId}`, { state: { plan } });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to start session');
       setStarting(false);
@@ -48,7 +53,7 @@ export default function PracticePage() {
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  const totalMinutes = plan.reduce((sum, ex) => sum + ex.estimatedMinutes, 0);
+  const totalMinutes = plan.reduce((sum, item) => sum + item.exercise.estimatedMinutes, 0);
 
   return (
     <Layout>
@@ -84,27 +89,27 @@ export default function PracticePage() {
         {!loading && plan.length > 0 && (
           <>
             <div className="space-y-3">
-              {plan.map((exercise, idx) => (
+              {plan.map((item, idx) => (
                 <div
-                  key={exercise.id}
+                  key={item.exercise.id}
                   className="bg-gray-900 border border-gray-800 rounded-xl p-5 flex items-start gap-4"
                 >
                   <div className="w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold shrink-0">
                     {idx + 1}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-100">{exercise.name}</h3>
-                    {exercise.description && (
-                      <p className="text-sm text-gray-400 mt-0.5">{exercise.description}</p>
+                    <h3 className="font-semibold text-gray-100">{item.exercise.name}</h3>
+                    {item.exercise.description && (
+                      <p className="text-sm text-gray-400 mt-0.5">{item.exercise.description}</p>
                     )}
                     <div className="flex flex-wrap gap-3 mt-2">
-                      {exercise.targetBpm !== null && (
+                      {item.suggestedBpm !== null && (
                         <span className="text-xs text-orange-300 bg-orange-900/30 px-2 py-0.5 rounded-full">
-                          Target: {exercise.targetBpm} BPM
+                          Start at: {item.suggestedBpm} BPM
                         </span>
                       )}
                       <span className="text-xs text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full">
-                        ~{exercise.estimatedMinutes} min
+                        ~{item.exercise.estimatedMinutes} min
                       </span>
                     </div>
                   </div>

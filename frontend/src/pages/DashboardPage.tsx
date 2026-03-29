@@ -10,8 +10,8 @@ export default function DashboardPage() {
   const [skillCount, setSkillCount] = useState<number | null>(null);
 
   useEffect(() => {
-    apiFetch<SkillWithMastery[]>('/skills')
-      .then((skills) => setSkillCount(skills.length))
+    apiFetch<{ skills: SkillWithMastery[] }>('/skills')
+      .then((data) => setSkillCount(data.skills.length))
       .catch(() => setSkillCount(0));
   }, []);
 

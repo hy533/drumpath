@@ -21,6 +21,10 @@ export interface Exercise {
   skillIds: string[];
 }
 
+export interface ExerciseWithSkills extends Exercise {
+  skills: Skill[];
+}
+
 export interface UserMastery {
   userId: string;
   skillId: string;
