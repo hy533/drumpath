@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { randomUUID } from 'crypto';
+import { createHash } from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
 import { Pool } from 'pg';
@@ -30,6 +30,26 @@ interface SeedExercise {
 interface SeedGraph {
   skills: SeedSkill[];
   exercises: SeedExercise[];
+}
+
+// A fixed namespace UUID for this app's seed data (arbitrary but stable).
+const SEED_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8'; // UUID v1 DNS namespace, repurposed
+
+/**
+ * Generate a deterministic v5-like UUID from a seed string.
+ * Uses SHA-1 of (namespace + seedId), then formats as UUID v5.
+ */
+function seedToUuid(seedId: string): string {
+  const namespaceBytes = Buffer.from(SEED_NAMESPACE.replace(/-/g, ''), 'hex');
+  const hash = createHash('sha1').update(namespaceBytes).update(seedId).digest();
+
+  // Set version bits (version 5 = 0101xxxx) at byte 6
+  hash[6] = (hash[6] & 0x0f) | 0x50;
+  // Set variant bits (10xxxxxx) at byte 8
+  hash[8] = (hash[8] & 0x3f) | 0x80;
+
+  const hex = hash.toString('hex');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
 }
 
 function parseSeedGraph(raw: unknown): SeedGraph {
@@ -83,12 +103,12 @@ async function main(): Promise<number> {
 
   const skillIdMap = new Map<string, string>();
   for (const skill of graph.skills) {
-    skillIdMap.set(skill.id, randomUUID());
+    skillIdMap.set(skill.id, seedToUuid(skill.id));
   }
 
   const exerciseIdMap = new Map<string, string>();
   for (const ex of graph.exercises) {
-    exerciseIdMap.set(ex.id, randomUUID());
+    exerciseIdMap.set(ex.id, seedToUuid(ex.id));
   }
 
   try {
