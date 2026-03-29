@@ -1,12 +1,15 @@
-import { Router } from 'express';
+import { Router, NextFunction } from 'express';
 import { Pool } from 'pg';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export function createAuthRouter(db: Pool): Router {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error('JWT_SECRET env var is required');
+
   const router = Router();
 
-  router.post('/register', async (req, res) => {
+  router.post('/register', async (req, res, next: NextFunction) => {
     const { email, password } = req.body as { email?: string; password?: string };
 
     if (!email || !password) {
@@ -22,7 +25,6 @@ export function createAuthRouter(db: Pool): Router {
       );
 
       const userId = result.rows[0].id;
-      const secret = process.env.JWT_SECRET!;
       const token = jwt.sign({ userId }, secret, { expiresIn: '7d' });
 
       res.status(201).json({ token, userId });
@@ -32,11 +34,11 @@ export function createAuthRouter(db: Pool): Router {
         res.status(409).json({ error: 'Email already registered' });
         return;
       }
-      throw err;
+      next(err);
     }
   });
 
-  router.post('/login', async (req, res) => {
+  router.post('/login', async (req, res, next: NextFunction) => {
     const { email, password } = req.body as { email?: string; password?: string };
 
     if (!email || !password) {
@@ -44,28 +46,31 @@ export function createAuthRouter(db: Pool): Router {
       return;
     }
 
-    const result = await db.query<{ id: string; password_hash: string }>(
-      'SELECT id, password_hash FROM users WHERE email = $1',
-      [email]
-    );
+    try {
+      const result = await db.query<{ id: string; password_hash: string }>(
+        'SELECT id, password_hash FROM users WHERE email = $1',
+        [email]
+      );
 
-    const user = result.rows[0];
-    if (!user) {
-      res.status(401).json({ error: 'Invalid credentials' });
-      return;
+      const user = result.rows[0];
+      if (!user) {
+        res.status(401).json({ error: 'Invalid credentials' });
+        return;
+      }
+
+      const valid = await bcrypt.compare(password, user.password_hash);
+      if (!valid) {
+        res.status(401).json({ error: 'Invalid credentials' });
+        return;
+      }
+
+      const userId = user.id;
+      const token = jwt.sign({ userId }, secret, { expiresIn: '7d' });
+
+      res.status(200).json({ token, userId });
+    } catch (err) {
+      next(err);
     }
-
-    const valid = await bcrypt.compare(password, user.password_hash);
-    if (!valid) {
-      res.status(401).json({ error: 'Invalid credentials' });
-      return;
-    }
-
-    const secret = process.env.JWT_SECRET!;
-    const userId = user.id;
-    const token = jwt.sign({ userId }, secret, { expiresIn: '7d' });
-
-    res.status(200).json({ token, userId });
   });
 
   return router;

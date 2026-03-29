@@ -129,7 +129,7 @@ describe('POST /auth/login', () => {
 });
 
 describe('requireAuth middleware', () => {
-  const secret = process.env.JWT_SECRET || 'test-secret';
+  const secret = process.env.JWT_SECRET!;
 
   it('allows requests with a valid JWT and attaches userId', async () => {
     const userId = 'test-user-id';

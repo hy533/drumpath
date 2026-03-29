@@ -24,7 +24,11 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
   }
 
   try {
-    const payload = jwt.verify(token, secret) as { userId: string };
+    const payload = jwt.verify(token, secret) as { userId?: string };
+    if (typeof payload.userId !== 'string') {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
     req.userId = payload.userId;
     next();
   } catch {
