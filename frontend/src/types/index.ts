@@ -40,4 +40,5 @@ export interface SkillWithMastery extends Skill {
   masteryScore: number;
   qualifyingSessions: number;
   prerequisiteIds: string[];
+  lastPracticedAt: Date | null;
 }
