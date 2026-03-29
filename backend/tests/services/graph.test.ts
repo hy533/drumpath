@@ -70,6 +70,14 @@ describe('getAvailableSkills', () => {
 });
 
 describe('getSkillGraph', () => {
+  beforeAll(async () => {
+    await db.query(`
+      INSERT INTO user_mastery (user_id, skill_id, score, qualifying_sessions)
+      VALUES ($1, $2, 100, 3)
+      ON CONFLICT (user_id, skill_id) DO UPDATE SET score = 100, qualifying_sessions = 3
+    `, [userId, gripId]);
+  });
+
   it('returns all skills with mastery scores and prerequisite ids', async () => {
     const graph = await getSkillGraph(userId, db);
     const grip = graph.find(s => s.id === gripId)!;
