@@ -43,11 +43,30 @@ export function createSessionsRouter(db: Pool): Router {
       return;
     }
 
-    const resolvedBpm = bpmReached === null || bpmReached === undefined ? null : (bpmReached as number);
+    let resolvedBpm: number | null;
+    if (bpmReached === null || bpmReached === undefined) {
+      resolvedBpm = null;
+    } else if (typeof bpmReached === 'number' && Number.isInteger(bpmReached) && bpmReached >= 0) {
+      resolvedBpm = bpmReached;
+    } else {
+      res.status(400).json({ error: 'bpmReached must be a non-negative integer or null' });
+      return;
+    }
 
     const client = await db.connect();
+    let committed = false;
     try {
       await client.query('BEGIN');
+
+      const owns = await client.query(
+        'SELECT 1 FROM practice_sessions WHERE id = $1 AND user_id = $2',
+        [sessionId, req.userId!]
+      );
+      if (owns.rowCount === 0) {
+        await client.query('ROLLBACK').catch(() => {});
+        res.status(404).json({ error: 'Session not found' });
+        return;
+      }
 
       await client.query(
         `INSERT INTO session_exercises (session_id, exercise_id, bpm_reached, feeling, minutes_spent)
@@ -133,9 +152,10 @@ export function createSessionsRouter(db: Pool): Router {
       }
 
       await client.query('COMMIT');
+      committed = true;
       res.status(201).json({ logged: true });
     } catch (err) {
-      await client.query('ROLLBACK');
+      if (!committed) await client.query('ROLLBACK').catch(() => {});
       next(err);
     } finally {
       client.release();
