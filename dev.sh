@@ -37,10 +37,9 @@ echo "────────────────────────�
 
 # ── load .env ────────────────────────────────────────────────────────────────
 if [[ -f "$ENV_FILE" ]]; then
-  # Export only non-empty, non-comment lines (don't override already-set vars)
   set -a
   # shellcheck disable=SC1090
-  source <(grep -v '^\s*#' "$ENV_FILE" | grep -v '^\s*$')
+  source "$ENV_FILE"
   set +a
   ok "Loaded $ENV_FILE"
 else
