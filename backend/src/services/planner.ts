@@ -1,10 +1,22 @@
 import type { ExerciseWithSkills, PlannedExercise } from '../types';
 
+/**
+ * Generates a time-bounded, prioritised practice plan.
+ *
+ * @param masteryMap - skillId → mastery score (0–100).
+ *   Skills absent from the map are treated as 0% mastery (= highest priority /
+ *   lowest starting BPM). Callers should ensure every skill referenced by an
+ *   exercise's `skills` array has an entry, or accept that unknown skills are
+ *   treated as unpractised.
+ * @param targetMinutes - target session length; the returned plan will not
+ *   exceed this duration. A value ≤ 0 always returns an empty plan.
+ */
 export function planSession(
   exercises: ExerciseWithSkills[],
   masteryMap: Map<string, number>,
   targetMinutes: number,
 ): PlannedExercise[] {
+  if (targetMinutes <= 0) return [];
   const prioritized = exercises
     .map(ex => {
       const avgMastery = ex.skills.length === 0
