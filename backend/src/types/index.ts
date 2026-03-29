@@ -42,3 +42,12 @@ export interface SkillWithMastery extends Skill {
   prerequisiteIds: string[];
   lastPracticedAt: Date | null;
 }
+
+export interface ExerciseWithSkills extends Exercise {
+  skills: Skill[];
+}
+
+export interface PlannedExercise {
+  exercise: ExerciseWithSkills;
+  suggestedBpm: number | null;
+}
