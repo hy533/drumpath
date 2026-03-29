@@ -59,9 +59,12 @@ CREATE TABLE IF NOT EXISTS practice_sessions (
 CREATE TABLE IF NOT EXISTS session_exercises (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   session_id UUID REFERENCES practice_sessions(id) ON DELETE CASCADE,
-  exercise_id UUID REFERENCES exercises(id),
+  exercise_id UUID REFERENCES exercises(id) ON DELETE SET NULL,
   bpm_reached INTEGER,
   feeling TEXT CHECK (feeling IN ('Rough', 'OK', 'Good', 'Nailed it')),
   minutes_spent INTEGER,
   logged_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS idx_practice_sessions_user_id ON practice_sessions(user_id);
+CREATE INDEX IF NOT EXISTS idx_session_exercises_session_id ON session_exercises(session_id);
