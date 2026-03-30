@@ -6,6 +6,7 @@ import { apiFetch } from '../api/client';
 interface AuthResponse {
   token: string;
   userId: string;
+  onboarded: boolean;
 }
 
 export default function RegisterPage() {
@@ -25,8 +26,8 @@ export default function RegisterPage() {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
-      login(data.token, data.userId);
-      navigate('/');
+      login(data.token, data.userId, data.onboarded);
+      navigate('/onboarding');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
     } finally {
