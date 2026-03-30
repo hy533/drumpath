@@ -5,6 +5,7 @@ import DashboardPage from './pages/DashboardPage';
 import SkillGraphPage from './pages/SkillGraphPage';
 import PracticePage from './pages/PracticePage';
 import SessionPage from './pages/SessionPage';
+import OnboardingPage from './pages/OnboardingPage';
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/" element={<DashboardPage />} />
         <Route path="/skills" element={<SkillGraphPage />} />
         <Route path="/practice" element={<PracticePage />} />
