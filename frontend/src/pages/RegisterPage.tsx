@@ -27,7 +27,7 @@ export default function RegisterPage() {
         body: JSON.stringify({ email, password }),
       });
       login(data.token, data.userId, data.onboarded);
-      navigate('/onboarding');
+      navigate(data.onboarded ? '/' : '/onboarding');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
     } finally {
