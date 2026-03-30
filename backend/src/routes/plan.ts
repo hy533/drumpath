@@ -8,7 +8,10 @@ export function createPlanRouter(db: Pool): Router {
   const router = Router();
 
   router.post('/generate', requireAuth, async (req, res, next: NextFunction) => {
-    const { targetMinutes } = req.body as { targetMinutes?: unknown };
+    const { targetMinutes, shuffle: shuffleRaw } = req.body as {
+      targetMinutes?: unknown;
+      shuffle?: unknown;
+    };
 
     if (
       typeof targetMinutes !== 'number' ||
@@ -18,6 +21,12 @@ export function createPlanRouter(db: Pool): Router {
       res.status(400).json({ error: 'targetMinutes must be a positive integer' });
       return;
     }
+
+    if (shuffleRaw !== undefined && typeof shuffleRaw !== 'boolean') {
+      res.status(400).json({ error: 'shuffle must be a boolean' });
+      return;
+    }
+    const shuffle = shuffleRaw === true;
 
     try {
       const exercisesResult = await db.query<{
@@ -82,7 +91,7 @@ export function createPlanRouter(db: Pool): Router {
         masteryMap.set(row.skill_id, row.score);
       }
 
-      const plan = planSession(exercises, masteryMap, targetMinutes);
+      const plan = planSession(exercises, masteryMap, targetMinutes, shuffle);
       res.status(200).json({ plan });
     } catch (err) {
       next(err);
