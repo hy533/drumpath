@@ -58,8 +58,11 @@ export default function PracticePage() {
 
   const handleShuffle = async () => {
     setShuffling(true);
-    await fetchPlan(true);
-    setShuffling(false);
+    try {
+      await fetchPlan(true);
+    } finally {
+      setShuffling(false);
+    }
   };
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
