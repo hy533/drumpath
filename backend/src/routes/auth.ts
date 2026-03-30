@@ -19,15 +19,17 @@ export function createAuthRouter(db: Pool): Router {
 
     try {
       const passwordHash = await bcrypt.hash(password, 10);
-      const result = await db.query<{ id: string }>(
-        'INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id',
+      const result = await db.query<{ id: string; onboarded: boolean }>(
+        `INSERT INTO users (email, password_hash)
+         VALUES ($1, $2)
+         RETURNING id, onboarded`,
         [email, passwordHash]
       );
 
-      const userId = result.rows[0].id;
+      const { id: userId, onboarded } = result.rows[0];
       const token = jwt.sign({ userId }, secret, { expiresIn: '7d' });
 
-      res.status(201).json({ token, userId });
+      res.status(201).json({ token, userId, onboarded });
     } catch (err: unknown) {
       const pgErr = err as { code?: string };
       if (pgErr.code === '23505') {
@@ -47,8 +49,8 @@ export function createAuthRouter(db: Pool): Router {
     }
 
     try {
-      const result = await db.query<{ id: string; password_hash: string }>(
-        'SELECT id, password_hash FROM users WHERE email = $1',
+      const result = await db.query<{ id: string; password_hash: string; onboarded: boolean }>(
+        `SELECT id, password_hash, onboarded FROM users WHERE email = $1`,
         [email]
       );
 
@@ -67,7 +69,7 @@ export function createAuthRouter(db: Pool): Router {
       const userId = user.id;
       const token = jwt.sign({ userId }, secret, { expiresIn: '7d' });
 
-      res.status(200).json({ token, userId });
+      res.status(200).json({ token, userId, onboarded: user.onboarded });
     } catch (err) {
       next(err);
     }

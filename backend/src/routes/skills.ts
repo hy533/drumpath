@@ -65,6 +65,10 @@ export function createSkillsRouter(db: Pool): Router {
           [req.userId!, skillId, score]
         );
       }
+      await client.query(
+        `UPDATE users SET onboarded = true WHERE id = $1`,
+        [req.userId]
+      );
       await client.query('COMMIT');
       res.status(200).json({ updated: ratings.length });
     } catch (err) {
