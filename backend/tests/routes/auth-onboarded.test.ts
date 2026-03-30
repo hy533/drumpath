@@ -71,13 +71,12 @@ describe('POST /skills/onboard sets onboarded=true', () => {
       rating: 2,
     }));
 
-    if (ratings.length > 0) {
-      const onboardRes = await request(builtApp)
-        .post('/skills/onboard')
-        .set('Authorization', `Bearer ${token}`)
-        .send({ ratings });
-      expect(onboardRes.status).toBe(200);
-    }
+    expect(ratings.length).toBeGreaterThan(0); // skills must be seeded for this test to work
+    const onboardRes = await request(builtApp)
+      .post('/skills/onboard')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ ratings });
+    expect(onboardRes.status).toBe(200);
 
     const loginRes = await request(builtApp)
       .post('/auth/login')
