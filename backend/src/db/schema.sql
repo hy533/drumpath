@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS exercises (
   notes TEXT NOT NULL DEFAULT '',
   target_bpm INTEGER,
   estimated_minutes INTEGER NOT NULL DEFAULT 10,
+  video_url TEXT,
+  audio_url TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

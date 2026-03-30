@@ -19,6 +19,8 @@ export interface Exercise {
   targetBpm: number | null;
   estimatedMinutes: number;
   skillIds: string[];
+  videoUrl: string | null;
+  audioUrl: string | null;
 }
 
 export interface ExerciseWithSkills extends Exercise {

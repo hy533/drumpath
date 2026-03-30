@@ -25,6 +25,8 @@ interface SeedExercise {
   targetBpm: number | null;
   estimatedMinutes: number;
   skillIds: string[];
+  videoUrl?: string | null;
+  audioUrl?: string | null;
 }
 
 interface SeedGraph {
@@ -141,10 +143,10 @@ async function main(): Promise<number> {
     for (const ex of graph.exercises) {
       const realId = exerciseIdMap.get(ex.id)!;
       await client.query(
-        `INSERT INTO exercises (id, name, description, notes, target_bpm, estimated_minutes)
-         VALUES ($1, $2, $3, $4, $5, $6)
+        `INSERT INTO exercises (id, name, description, notes, target_bpm, estimated_minutes, video_url, audio_url)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
          ON CONFLICT (id) DO NOTHING`,
-        [realId, ex.name, ex.description, ex.notes, ex.targetBpm, ex.estimatedMinutes]
+        [realId, ex.name, ex.description, ex.notes, ex.targetBpm, ex.estimatedMinutes, ex.videoUrl ?? null, ex.audioUrl ?? null]
       );
     }
 
