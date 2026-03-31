@@ -36,6 +36,8 @@ export function createPlanRouter(db: Pool): Router {
         notes: string;
         target_bpm: number | null;
         estimated_minutes: number;
+        video_url: string | null;
+        audio_url: string | null;
         skill_id: string | null;
         skill_name: string | null;
         category: string | null;
@@ -44,6 +46,7 @@ export function createPlanRouter(db: Pool): Router {
         skill_description: string | null;
       }>(`
         SELECT e.id, e.name, e.description, e.notes, e.target_bpm, e.estimated_minutes,
+               e.video_url, e.audio_url,
                s.id AS skill_id, s.name AS skill_name, s.category, s.level, s.has_bpm_target, s.description AS skill_description
         FROM exercises e
         LEFT JOIN exercise_skills es ON es.exercise_id = e.id
@@ -63,6 +66,8 @@ export function createPlanRouter(db: Pool): Router {
             estimatedMinutes: row.estimated_minutes,
             skillIds: [],
             skills: [],
+            videoUrl: row.video_url,
+            audioUrl: row.audio_url,
           });
         }
         if (row.skill_id) {

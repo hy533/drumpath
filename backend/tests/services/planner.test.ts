@@ -14,6 +14,7 @@ const exercise = (
   id, name: `Exercise ${id}`, description: '', notes: '',
   targetBpm, estimatedMinutes, skillIds,
   skills: skillIds.map(sid => skill(sid)),
+  videoUrl: null, audioUrl: null,
 });
 
 describe('planSession', () => {
@@ -96,6 +97,7 @@ describe('planSession', () => {
     const exNoSkills: ExerciseWithSkills = {
       id: 'e_no_skills', name: 'Ear Training', description: '', notes: '',
       targetBpm: null, estimatedMinutes: 5, skillIds: [], skills: [],
+      videoUrl: null, audioUrl: null,
     };
     const exLowMastery = exercise('e_low', 5, ['s1']);
     const masteryMap = new Map([['s1', 10]]);
@@ -109,6 +111,7 @@ describe('planSession', () => {
     const exNoSkills: ExerciseWithSkills = {
       id: 'e_no_skills', name: 'Ear Training', description: '', notes: '',
       targetBpm: null, estimatedMinutes: 5, skillIds: [], skills: [],
+      videoUrl: null, audioUrl: null,
     };
     // Only one exercise available, enough time — should still include it
     const result = planSession([exNoSkills], new Map(), 10);

@@ -15,9 +15,12 @@ export function createExercisesRouter(db: Pool): Router {
         notes: string;
         target_bpm: number | null;
         estimated_minutes: number;
+        video_url: string | null;
+        audio_url: string | null;
         skill_ids: string[];
       }>(`
         SELECT e.id, e.name, e.description, e.notes, e.target_bpm, e.estimated_minutes,
+               e.video_url, e.audio_url,
                ARRAY_REMOVE(ARRAY_AGG(es.skill_id), NULL) AS skill_ids
         FROM exercises e
         LEFT JOIN exercise_skills es ON es.exercise_id = e.id
@@ -33,6 +36,8 @@ export function createExercisesRouter(db: Pool): Router {
         targetBpm: row.target_bpm,
         estimatedMinutes: row.estimated_minutes,
         skillIds: row.skill_ids ?? [],
+        videoUrl: row.video_url,
+        audioUrl: row.audio_url,
       }));
 
       res.status(200).json({ exercises });
