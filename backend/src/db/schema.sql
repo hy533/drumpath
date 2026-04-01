@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS skills (
   description TEXT NOT NULL DEFAULT '',
   level TEXT NOT NULL CHECK (level IN ('Beginner', 'Intermediate', 'Advanced', 'Professional')),
   has_bpm_target BOOLEAN NOT NULL DEFAULT true,
+  concept_slug TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

@@ -9,6 +9,7 @@ export interface Skill {
   description: string;
   level: SkillLevel;
   hasBpmTarget: boolean;
+  conceptSlug: string | null;
 }
 
 export interface Exercise {
