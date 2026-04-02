@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { requireAuth } from '../middleware/auth';
 
-const CONCEPTS_DIR = path.resolve(process.cwd(), '..', 'docs', 'concepts');
+const CONCEPTS_DIR = path.resolve(__dirname, '..', '..', '..', 'docs', 'concepts');
 const SLUG_RE = /^[a-z0-9-]+$/;
 
 export function createConceptsRouter(): Router {
