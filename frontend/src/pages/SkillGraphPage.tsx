@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Layout from '../components/Layout';
 import { apiFetch } from '../api/client';
@@ -96,6 +96,14 @@ export default function SkillGraphPage() {
                     Last practiced:{' '}
                     {new Date(skill.lastPracticedAt).toLocaleDateString()}
                   </p>
+                )}
+                {skill.conceptSlug && (
+                  <Link
+                    to={`/concept/${skill.conceptSlug}`}
+                    className="inline-block text-xs text-orange-400 hover:text-orange-300 font-medium"
+                  >
+                    📖 Learn
+                  </Link>
                 )}
               </div>
             ))}

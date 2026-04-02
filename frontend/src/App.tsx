@@ -6,6 +6,7 @@ import SkillGraphPage from './pages/SkillGraphPage';
 import PracticePage from './pages/PracticePage';
 import SessionPage from './pages/SessionPage';
 import OnboardingPage from './pages/OnboardingPage';
+import ConceptPage from './pages/ConceptPage';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/skills" element={<SkillGraphPage />} />
         <Route path="/practice" element={<PracticePage />} />
         <Route path="/session/:id" element={<SessionPage />} />
+        <Route path="/concept/:slug" element={<ConceptPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
