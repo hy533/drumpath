@@ -44,10 +44,12 @@ export function createPlanRouter(db: Pool): Router {
         level: string | null;
         has_bpm_target: boolean | null;
         skill_description: string | null;
+        concept_slug: string | null;
       }>(`
         SELECT e.id, e.name, e.description, e.notes, e.target_bpm, e.estimated_minutes,
                e.video_url, e.audio_url,
-               s.id AS skill_id, s.name AS skill_name, s.category, s.level, s.has_bpm_target, s.description AS skill_description
+               s.id AS skill_id, s.name AS skill_name, s.category, s.level, s.has_bpm_target, s.description AS skill_description,
+               s.concept_slug
         FROM exercises e
         LEFT JOIN exercise_skills es ON es.exercise_id = e.id
         LEFT JOIN skills s ON s.id = es.skill_id
@@ -80,6 +82,7 @@ export function createPlanRouter(db: Pool): Router {
             level: row.level as Skill['level'],
             hasBpmTarget: row.has_bpm_target!,
             description: row.skill_description ?? '',
+            conceptSlug: row.concept_slug,
           });
         }
       }

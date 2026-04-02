@@ -2,7 +2,7 @@ import { planSession } from '../../src/services/planner';
 import type { ExerciseWithSkills } from '../../src/types';
 
 const skill = (id: string, name = 'Skill'): import('../../src/types').Skill => ({
-  id, name, category: 'Technique', description: '', level: 'Beginner', hasBpmTarget: false,
+  id, name, category: 'Technique', description: '', level: 'Beginner', hasBpmTarget: false, conceptSlug: null,
 });
 
 const exercise = (
