@@ -210,7 +210,7 @@ export default function ConceptPage() {
   const { isAuthenticated } = useAuth();
   const { slug } = useParams<{ slug: string }>();
   const [rawContent, setRawContent] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
