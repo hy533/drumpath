@@ -124,7 +124,7 @@ function QuizSection({ slug, questions }: { slug: string; questions: QuizQuestio
       <div className="mt-8 p-4 bg-green-900/30 border border-green-700 rounded-xl">
         <p className="text-green-300 font-semibold">✓ Quiz completed — you got every question right.</p>
         <button
-          onClick={() => { setCompleted(false); handleRetry(); }}
+          onClick={() => { localStorage.removeItem(storageKey); setCompleted(false); handleRetry(); }}
           className="mt-2 text-sm text-gray-400 underline hover:text-gray-200"
         >
           Retake quiz
@@ -214,14 +214,14 @@ export default function ConceptPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!slug) return;
+    if (!slug || !isAuthenticated) return;
     setLoading(true);
     setError('');
     apiFetch<{ content: string }>(`/concepts/${slug}`)
       .then(data => setRawContent(data.content))
       .catch(err => setError(err instanceof Error ? err.message : 'Failed to load concept'))
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, isAuthenticated]);
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
@@ -247,7 +247,7 @@ export default function ConceptPage() {
           <>
             <ReactMarkdown components={mdComponents}>{markdownContent}</ReactMarkdown>
             {questions.length > 0 && (
-              <QuizSection slug={slug!} questions={questions} />
+              <QuizSection key={slug} slug={slug!} questions={questions} />
             )}
           </>
         )}
