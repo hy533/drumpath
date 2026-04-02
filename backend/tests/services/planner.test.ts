@@ -2,7 +2,7 @@ import { planSession } from '../../src/services/planner';
 import type { ExerciseWithSkills } from '../../src/types';
 
 const skill = (id: string, name = 'Skill'): import('../../src/types').Skill => ({
-  id, name, category: 'Technique', description: '', level: 'Beginner', hasBpmTarget: false,
+  id, name, category: 'Technique', description: '', level: 'Beginner', hasBpmTarget: false, conceptSlug: null,
 });
 
 const exercise = (
@@ -14,6 +14,7 @@ const exercise = (
   id, name: `Exercise ${id}`, description: '', notes: '',
   targetBpm, estimatedMinutes, skillIds,
   skills: skillIds.map(sid => skill(sid)),
+  videoUrl: null, audioUrl: null,
 });
 
 describe('planSession', () => {
@@ -96,6 +97,7 @@ describe('planSession', () => {
     const exNoSkills: ExerciseWithSkills = {
       id: 'e_no_skills', name: 'Ear Training', description: '', notes: '',
       targetBpm: null, estimatedMinutes: 5, skillIds: [], skills: [],
+      videoUrl: null, audioUrl: null,
     };
     const exLowMastery = exercise('e_low', 5, ['s1']);
     const masteryMap = new Map([['s1', 10]]);
@@ -109,10 +111,68 @@ describe('planSession', () => {
     const exNoSkills: ExerciseWithSkills = {
       id: 'e_no_skills', name: 'Ear Training', description: '', notes: '',
       targetBpm: null, estimatedMinutes: 5, skillIds: [], skills: [],
+      videoUrl: null, audioUrl: null,
     };
     // Only one exercise available, enough time — should still include it
     const result = planSession([exNoSkills], new Map(), 10);
     expect(result).toHaveLength(1);
     expect(result[0].exercise.id).toBe('e_no_skills');
+  });
+});
+
+describe('planSession with shuffle', () => {
+  const makeExercise = (id: string, masteryScore: number) => {
+    const ex = exercise(id, 5, [id]);
+    return { ex, mastery: new Map([[id, masteryScore]]) };
+  };
+
+  it('shuffle=false always produces deterministic order', () => {
+    const { ex: e1, mastery: m1 } = makeExercise('s1', 10);
+    const { ex: e2, mastery: m2 } = makeExercise('s2', 90);
+    const mastery = new Map([...m1, ...m2]);
+    const result1 = planSession([e1, e2], mastery, 30, false);
+    const result2 = planSession([e1, e2], mastery, 30, false);
+    expect(result1.map(p => p.exercise.id)).toEqual(result2.map(p => p.exercise.id));
+  });
+
+  it('shuffle=true still respects time budget', () => {
+    const exercises = [
+      exercise('a', 10, ['sa']),
+      exercise('b', 10, ['sb']),
+      exercise('c', 10, ['sc']),
+      exercise('d', 10, ['sd']),
+    ];
+    const mastery = new Map([['sa', 10], ['sb', 20], ['sc', 30], ['sd', 40]]);
+    const result = planSession(exercises, mastery, 25, true);
+    const total = result.reduce((sum, p) => sum + p.exercise.estimatedMinutes, 0);
+    expect(total).toBeLessThanOrEqual(25);
+  });
+
+  it('shuffle=true with mocked Math.random applies jitter to change order', () => {
+    // e1 has mastery 10, e2 has mastery 20
+    // Deterministic: e1 first (lower mastery)
+    // With mocked jitter: e1 gets +50 (score=60), e2 gets +0 (score=20)
+    // After shuffle: e2 first (20 < 60)
+    const e1 = exercise('e1', 5, ['s1']);
+    const e2 = exercise('e2', 5, ['s2']);
+    const mastery = new Map([['s1', 10], ['s2', 20]]);
+
+    const spy = jest.spyOn(Math, 'random')
+      .mockReturnValueOnce(1)   // e1 jitter = 1 * 50 = 50 → score = 10+50 = 60
+      .mockReturnValueOnce(0);  // e2 jitter = 0 * 50 = 0  → score = 20+0  = 20
+
+    const result = planSession([e1, e2], mastery, 30, true);
+    spy.mockRestore();
+
+    expect(result[0].exercise.id).toBe('e2'); // e2 (score 20) before e1 (score 60)
+  });
+
+  it('shuffle defaults to deterministic when omitted (no 4th argument)', () => {
+    const { ex: e1, mastery: m1 } = makeExercise('s1', 10);
+    const { ex: e2, mastery: m2 } = makeExercise('s2', 90);
+    const mastery = new Map([...m1, ...m2]);
+    // No 4th argument — should behave same as shuffle=false
+    const result = planSession([e1, e2], mastery, 30);
+    expect(result[0].exercise.id).toBe('s1'); // lower mastery first
   });
 });

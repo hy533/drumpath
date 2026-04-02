@@ -1,0 +1,2 @@
+ALTER TABLE exercises ADD COLUMN IF NOT EXISTS video_url TEXT;
+ALTER TABLE exercises ADD COLUMN IF NOT EXISTS audio_url TEXT;

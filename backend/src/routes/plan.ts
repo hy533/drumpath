@@ -8,7 +8,10 @@ export function createPlanRouter(db: Pool): Router {
   const router = Router();
 
   router.post('/generate', requireAuth, async (req, res, next: NextFunction) => {
-    const { targetMinutes } = req.body as { targetMinutes?: unknown };
+    const { targetMinutes, shuffle: shuffleRaw } = req.body as {
+      targetMinutes?: unknown;
+      shuffle?: unknown;
+    };
 
     if (
       typeof targetMinutes !== 'number' ||
@@ -19,6 +22,12 @@ export function createPlanRouter(db: Pool): Router {
       return;
     }
 
+    if (shuffleRaw !== undefined && typeof shuffleRaw !== 'boolean') {
+      res.status(400).json({ error: 'shuffle must be a boolean' });
+      return;
+    }
+    const shuffle = shuffleRaw === true;
+
     try {
       const exercisesResult = await db.query<{
         id: string;
@@ -27,15 +36,20 @@ export function createPlanRouter(db: Pool): Router {
         notes: string;
         target_bpm: number | null;
         estimated_minutes: number;
+        video_url: string | null;
+        audio_url: string | null;
         skill_id: string | null;
         skill_name: string | null;
         category: string | null;
         level: string | null;
         has_bpm_target: boolean | null;
         skill_description: string | null;
+        concept_slug: string | null;
       }>(`
         SELECT e.id, e.name, e.description, e.notes, e.target_bpm, e.estimated_minutes,
-               s.id AS skill_id, s.name AS skill_name, s.category, s.level, s.has_bpm_target, s.description AS skill_description
+               e.video_url, e.audio_url,
+               s.id AS skill_id, s.name AS skill_name, s.category, s.level, s.has_bpm_target, s.description AS skill_description,
+               s.concept_slug
         FROM exercises e
         LEFT JOIN exercise_skills es ON es.exercise_id = e.id
         LEFT JOIN skills s ON s.id = es.skill_id
@@ -54,6 +68,8 @@ export function createPlanRouter(db: Pool): Router {
             estimatedMinutes: row.estimated_minutes,
             skillIds: [],
             skills: [],
+            videoUrl: row.video_url,
+            audioUrl: row.audio_url,
           });
         }
         if (row.skill_id) {
@@ -66,6 +82,7 @@ export function createPlanRouter(db: Pool): Router {
             level: row.level as Skill['level'],
             hasBpmTarget: row.has_bpm_target!,
             description: row.skill_description ?? '',
+            conceptSlug: row.concept_slug,
           });
         }
       }
@@ -82,7 +99,7 @@ export function createPlanRouter(db: Pool): Router {
         masteryMap.set(row.skill_id, row.score);
       }
 
-      const plan = planSession(exercises, masteryMap, targetMinutes);
+      const plan = planSession(exercises, masteryMap, targetMinutes, shuffle);
       res.status(200).json({ plan });
     } catch (err) {
       next(err);

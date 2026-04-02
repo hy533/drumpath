@@ -23,17 +23,22 @@ export default function PracticePage() {
   const [plan, setPlan] = useState<PlannedExercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
+  const [shuffling, setShuffling] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    apiFetch<PlanResponse>('/plan/generate', {
+  const fetchPlan = (shuffle: boolean) => {
+    setError('');
+    return apiFetch<PlanResponse>('/plan/generate', {
       method: 'POST',
-      body: JSON.stringify({ targetMinutes: 30 }),
+      body: JSON.stringify({ targetMinutes: 30, shuffle }),
     })
       .then((data) => setPlan(data.plan))
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to generate plan'))
-      .finally(() => setLoading(false));
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to generate plan'));
+  };
+
+  useEffect(() => {
+    fetchPlan(false).finally(() => setLoading(false));
   }, []);
 
   const handleStartSession = async () => {
@@ -51,6 +56,15 @@ export default function PracticePage() {
     }
   };
 
+  const handleShuffle = async () => {
+    setShuffling(true);
+    try {
+      await fetchPlan(true);
+    } finally {
+      setShuffling(false);
+    }
+  };
+
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   const totalMinutes = plan.reduce((sum, item) => sum + item.exercise.estimatedMinutes, 0);
@@ -63,15 +77,24 @@ export default function PracticePage() {
             <h1 className="text-2xl font-bold text-gray-100">Practice Plan</h1>
             <p className="text-gray-400 mt-1">30-minute session · {plan.length} exercises</p>
           </div>
-          {plan.length > 0 && (
+          <div className="flex items-center gap-3">
             <button
-              onClick={handleStartSession}
-              disabled={starting}
-              className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors"
+              onClick={handleShuffle}
+              disabled={shuffling || loading}
+              className="px-4 py-2.5 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 text-gray-300 font-medium rounded-lg transition-colors border border-gray-700"
             >
-              {starting ? 'Starting…' : 'Start Session'}
+              {shuffling ? 'Shuffling…' : '⟳ Shuffle'}
             </button>
-          )}
+            {plan.length > 0 && (
+              <button
+                onClick={handleStartSession}
+                disabled={starting}
+                className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors"
+              >
+                {starting ? 'Starting…' : 'Start Session'}
+              </button>
+            )}
+          </div>
         </div>
 
         {error && (

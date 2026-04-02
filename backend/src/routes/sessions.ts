@@ -81,9 +81,12 @@ export function createSessionsRouter(db: Pool): Router {
         notes: string;
         target_bpm: number | null;
         estimated_minutes: number;
+        video_url: string | null;
+        audio_url: string | null;
         skill_ids: string[];
       }>(
         `SELECT e.id, e.name, e.description, e.notes, e.target_bpm, e.estimated_minutes,
+                e.video_url, e.audio_url,
                 ARRAY_REMOVE(ARRAY_AGG(es.skill_id), NULL) AS skill_ids
          FROM exercises e
          LEFT JOIN exercise_skills es ON es.exercise_id = e.id
@@ -102,6 +105,8 @@ export function createSessionsRouter(db: Pool): Router {
           targetBpm: exRow.target_bpm,
           estimatedMinutes: exRow.estimated_minutes,
           skillIds: exRow.skill_ids ?? [],
+          videoUrl: exRow.video_url,
+          audioUrl: exRow.audio_url,
         };
 
         for (const skillId of exercise.skillIds) {

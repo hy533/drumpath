@@ -9,6 +9,7 @@ export interface Skill {
   description: string;
   level: SkillLevel;
   hasBpmTarget: boolean;
+  conceptSlug: string | null;
 }
 
 export interface Exercise {
@@ -19,6 +20,8 @@ export interface Exercise {
   targetBpm: number | null;
   estimatedMinutes: number;
   skillIds: string[];
+  videoUrl: string | null;
+  audioUrl: string | null;
 }
 
 export interface ExerciseWithSkills extends Exercise {

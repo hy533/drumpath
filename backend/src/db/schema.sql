@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS skills (
   description TEXT NOT NULL DEFAULT '',
   level TEXT NOT NULL CHECK (level IN ('Beginner', 'Intermediate', 'Advanced', 'Professional')),
   has_bpm_target BOOLEAN NOT NULL DEFAULT true,
+  concept_slug TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -31,6 +32,8 @@ CREATE TABLE IF NOT EXISTS exercises (
   notes TEXT NOT NULL DEFAULT '',
   target_bpm INTEGER,
   estimated_minutes INTEGER NOT NULL DEFAULT 10,
+  video_url TEXT,
+  audio_url TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

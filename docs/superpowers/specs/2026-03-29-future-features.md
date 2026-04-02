@@ -62,14 +62,12 @@
 **User story:** As a drummer, I want to log practice sessions from my phone while sitting at the kit.
 
 **Key design questions:**
-- Approach A: **React Native / Expo** — reuse most of the existing React logic, share types
-- Approach B: **Swift / SwiftUI** — native performance, better iOS integration (haptics, offline)
-- Approach C: **Progressive Web App (PWA)** — add a manifest + service worker to the existing Vite app; works on iOS Safari with limitations
-- Recommended path: PWA first (lowest cost, no App Store), then Expo if a real native feel is needed
-- Offline support: cache the current plan locally; sync logs when back online
+- **Approach: PWA** — add `manifest.json` + service worker to the existing Vite app. Works on iOS Safari and Android with no new codebase.
+- Offline support: cache today's plan locally via service worker; sync session logs when back online
 - The backend API is already REST-based and works from any client
+- If native feel is needed later, migrate to Expo (React Native) — but only after validating user demand
 
-**Touches:** `frontend/` (add `manifest.json`, service worker, mobile-optimised layouts), or new `ios/` Expo workspace
+**Touches:** `frontend/public/manifest.json`, `frontend/src/sw.ts` (service worker), mobile-optimised layout tweaks in `Layout.tsx`
 
 ---
 
@@ -123,8 +121,9 @@ D: Play at speed 4
 
 - Add `concept_slug TEXT` column to `skills` table; skills with theory content reference a concept file
 - New `ConceptPage` renders the markdown (use `react-markdown`) and the quiz inline
-- Quiz state is local; on passing (e.g. 3/4 correct), record a `concept_completed` event or award a small mastery boost
-- Images: link to external URLs with attribution — no hosting required; include `<figure>` + `<figcaption>` with source credit
+- **Quiz is purely educational** — no mastery boost or skill unlock. Completion is tracked locally (localStorage) for UI state only (e.g. show ✓ badge). Physical mastery comes from playing, not answering questions.
+- Images: link to external URLs with attribution — no hosting required; use `<figure>` + `<figcaption>` with source credit
+- Content lives in `docs/concepts/<slug>.md` — static files, version-controlled, no DB storage needed
 
 **Touches:** `skills` table (add `concept_slug`), new `ConceptPage.tsx`, `react-markdown` dependency, `docs/concepts/` directory, seed data for concept slugs
 
@@ -142,9 +141,11 @@ D: Play at speed 4
 
 ---
 
-## Open Questions
+## Decisions
 
-- Should concepts be seeded as static markdown files or stored in the DB as rich text?
-- For audio/video: curate manually or allow community contributions?
-- iOS: PWA first or go straight to Expo?
-- Quiz: does passing a quiz unlock a skill, or is it purely educational?
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| Concepts storage | **Static markdown files** in `docs/concepts/` | Version-controlled, no extra infrastructure, content changes rarely enough that deploys are fine |
+| Quiz outcome | **Purely educational** — no mastery boost or skill unlock | Physical mastery must come from playing, not answering multiple choice; avoids gaming the system |
+| iOS approach | **PWA first** (manifest + service worker on existing Vite app) | Zero new codebase, ships in days, covers iOS + Android; migrate to Expo later if native feel is needed |
+| Audio/video curation | **Manual curation** (seed/admin, no community contributions in V1) | Quality control; Vic Firth YouTube channel covers most standard rudiments for free |

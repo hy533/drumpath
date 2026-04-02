@@ -6,6 +6,14 @@ import { apiFetch } from '../api/client';
 import { Feeling } from '../types';
 import { PlannedExercise } from './PracticePage';
 
+const YOUTUBE_RE = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+
+function getYouTubeId(url: string | null | undefined): string | null {
+  if (!url) return null;
+  const m = url.match(YOUTUBE_RE);
+  return m ? m[1] : null;
+}
+
 interface LocationState {
   plan?: PlannedExercise[];
 }
@@ -145,6 +153,7 @@ export default function SessionPage() {
           {plan.map((item, idx) => {
             const exercise = item.exercise;
             const log = logs[idx];
+            const ytId = getYouTubeId(exercise.videoUrl);
             return (
               <div
                 key={exercise.id}
@@ -153,10 +162,21 @@ export default function SessionPage() {
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <div>
+                  <div className="flex-1">
                     <h3 className="font-semibold text-gray-100">{exercise.name}</h3>
                     {exercise.description && (
                       <p className="text-sm text-gray-400 mt-0.5">{exercise.description}</p>
+                    )}
+                    {ytId && (
+                      <div className="mt-3 aspect-video rounded-lg overflow-hidden">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${ytId}`}
+                          title={`How to: ${exercise.name}`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen={true}
+                          className="w-full h-full border-0"
+                        />
+                      </div>
                     )}
                   </div>
                   {log.submitted && (

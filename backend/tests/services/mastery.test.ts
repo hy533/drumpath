@@ -11,12 +11,14 @@ const baseMastery: UserMastery = {
 
 const bpmExercise: Exercise = {
   id: 'e1', name: 'Single Stroke Roll', description: '', notes: '',
-  targetBpm: 100, estimatedMinutes: 10, skillIds: ['s1']
+  targetBpm: 100, estimatedMinutes: 10, skillIds: ['s1'],
+  videoUrl: null, audioUrl: null,
 };
 
 const nonBpmExercise: Exercise = {
   id: 'e2', name: 'Grip & Posture', description: '', notes: '',
-  targetBpm: null, estimatedMinutes: 5, skillIds: ['s1']
+  targetBpm: null, estimatedMinutes: 5, skillIds: ['s1'],
+  videoUrl: null, audioUrl: null,
 };
 
 describe('calculateMasteryUpdate', () => {
