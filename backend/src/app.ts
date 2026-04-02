@@ -5,6 +5,7 @@ import { createExercisesRouter } from './routes/exercises';
 import { createPlanRouter } from './routes/plan';
 import { createSessionsRouter } from './routes/sessions';
 import { createSkillsRouter } from './routes/skills';
+import { createConceptsRouter } from './routes/concepts';
 
 export function createApp(db: Pool): express.Express {
   const app = express();
@@ -41,6 +42,7 @@ export function createApp(db: Pool): express.Express {
   app.use('/exercises', createExercisesRouter(db));
   app.use('/sessions', createSessionsRouter(db));
   app.use('/plan', createPlanRouter(db));
+  app.use('/concepts', createConceptsRouter());
 
   app.use(
     (
